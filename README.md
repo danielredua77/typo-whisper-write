@@ -1,73 +1,125 @@
-# Welcome to your Lovable project
 
-## Project info
+# AI Keyboard - Teclado Android com correção gramatical por IA
 
-**URL**: https://lovable.dev/projects/3a8e8e67-b5b6-4800-a277-e79a4d37a476
+Este projeto consiste em um teclado Android personalizado com integração de inteligência artificial para correção gramatical e de estilo em tempo real. O sistema é dividido em duas partes principais: o aplicativo Android (teclado) e o backend com IA para processamento de texto.
 
-## How can I edit this code?
+## Estrutura do projeto
 
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/3a8e8e67-b5b6-4800-a277-e79a4d37a476) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```
+project/
+├── android/              # Código fonte do aplicativo Android (teclado)
+│   ├── app/             # Módulo principal do aplicativo
+│   │   ├── src/main/    
+│   │   │   ├── java/    # Código Kotlin/Java
+│   │   │   ├── res/     # Recursos (layouts, strings, etc)
+│   │   │   └── AndroidManifest.xml
+│   └── build.gradle     # Configuração de build
+└── backend/             # Servidor com IA para correção de texto
+    ├── app.py           # Aplicação Flask (versão Python)
+    ├── server.js        # Aplicação Express (versão Node.js)
+    ├── requirements.txt # Dependências Python
+    └── package.json     # Dependências Node.js
 ```
 
-**Edit a file directly in GitHub**
+## Aplicativo Android (Teclado)
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+O teclado Android é implementado usando a API `InputMethodService` do Android, que permite criar métodos de entrada personalizados. O aplicativo captura o texto digitado pelo usuário, envia para análise no backend e exibe sugestões de correção.
 
-**Use GitHub Codespaces**
+### Principais componentes:
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+1. `AIKeyboardService.kt`: Implementação do serviço de teclado
+2. `KeyboardView.kt`: Layout e renderização do teclado
+3. `ApiClient.kt`: Cliente para comunicação com o backend
+4. `CorrectionManager.kt`: Gerenciamento de sugestões e correções
 
-## What technologies are used for this project?
+### Características do teclado:
 
-This project is built with:
+- Layout padrão com teclas QWERTY
+- Barra de sugestões para exibir correções
+- Configuração do servidor (endereço IP e porta)
+- Suporte a diferentes tipos de entrada de texto
+- Detecção de espaço para análise de frases
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Backend com IA
 
-## How can I deploy this project?
+O backend pode ser implementado em Python (Flask) ou Node.js (Express), fornecendo uma API REST para análise e correção de texto. O sistema usa modelos de linguagem para identificar e corrigir erros gramaticais, ortográficos e de estilo.
 
-Simply open [Lovable](https://lovable.dev/projects/3a8e8e67-b5b6-4800-a277-e79a4d37a476) and click on Share -> Publish.
+### Versão Python (Flask):
 
-## Can I connect a custom domain to my Lovable project?
+- **Dependências**: Flask, spaCy, LanguageTool
+- **Endpoint principal**: `POST /corrigir`
+- **Modelo de IA**: spaCy para processamento de linguagem natural
 
-Yes, you can!
+### Versão Node.js (Express):
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+- **Dependências**: Express, languagetool-api
+- **Endpoint principal**: `POST /corrigir`
+- **Modelo de IA**: LanguageTool via API para verificação gramatical
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## Instruções de instalação
+
+### Compilação e instalação do teclado
+
+1. **Configurar o ambiente de desenvolvimento Android:**
+   - Instale o Android Studio
+   - Configure o SDK Android
+
+2. **Compilar o aplicativo:**
+   ```bash
+   cd android
+   ./gradlew assembleDebug
+   ```
+
+3. **Instalar o APK:**
+   - Transfira o arquivo APK gerado para o dispositivo Android
+   - Instale o APK (permita a instalação de fontes desconhecidas nas configurações)
+
+4. **Ativar o teclado:**
+   - Vá para Configurações > Sistema > Idiomas e entrada > Teclado virtual
+   - Selecione "Gerenciar teclados"
+   - Ative "AI Keyboard"
+   - Selecione o AI Keyboard como método de entrada padrão
+
+### Configuração do backend
+
+1. **Versão Python:**
+   ```bash
+   cd backend
+   pip install -r requirements.txt
+   python app.py
+   ```
+
+2. **Versão Node.js:**
+   ```bash
+   cd backend
+   npm install
+   node server.js
+   ```
+
+3. **Configurar o teclado para acessar o backend:**
+   - Abra o aplicativo AI Keyboard
+   - Acesse as configurações
+   - Insira o endereço IP e porta do servidor backend
+   - Teste a conexão
+
+## Uso
+
+1. Ative o teclado AI Keyboard em qualquer aplicativo de texto
+2. Digite normalmente
+3. Quando pressionar espaço após uma palavra ou frase, o teclado analisará o texto
+4. Se houver sugestões de correção, elas aparecerão na barra superior do teclado
+5. Toque na sugestão para aplicar a correção
+
+## Recursos adicionais
+
+- [APK pré-compilado para download direto](https://github.com/ai-keyboard/releases)
+- [Documentação detalhada da API](https://github.com/ai-keyboard/docs)
+- [Guia para desenvolvedores](https://github.com/ai-keyboard/contributors)
+
+## Contribuindo
+
+Contribuições são bem-vindas! Por favor, consulte o guia para desenvolvedores para mais informações sobre como contribuir para o projeto.
+
+## Licença
+
+Este projeto é licenciado sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
