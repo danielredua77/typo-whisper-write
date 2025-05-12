@@ -1,7 +1,8 @@
 
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 
 const NotFound = () => {
   const location = useLocation();
@@ -23,9 +24,19 @@ const NotFound = () => {
         <p className="text-xl text-gray-600 mb-6">
           Oops! Parece que o teclado digitou o endereço errado.
         </p>
-        <Button asChild className="bg-keyboard-accent hover:bg-blue-700">
-          <a href="/">Voltar ao Início</a>
-        </Button>
+        <div className="space-y-4">
+          <Button asChild className="bg-keyboard-accent hover:bg-blue-700 w-full">
+            <Link to="/">
+              <ArrowLeft className="mr-2" size={18} />
+              Voltar ao Início
+            </Link>
+          </Button>
+          <p className="text-sm text-gray-500">
+            Se você estava tentando acessar informações sobre o projeto, tente clicar em 
+            <Link to="/project" className="text-keyboard-accent hover:underline mx-1">Projeto</Link> 
+            no menu de navegação.
+          </p>
+        </div>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 
 type HeaderProps = {
   activeSection: string;
@@ -10,6 +10,7 @@ type HeaderProps = {
 const Header = ({ activeSection, setActiveSection }: HeaderProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   const handleScroll = () => {
     if (window.scrollY > 10) {
@@ -23,7 +24,8 @@ const Header = ({ activeSection, setActiveSection }: HeaderProps) => {
     setActiveSection(sectionId);
     setMobileMenuOpen(false);
 
-    if (window.location.pathname !== '/') {
+    if (location.pathname !== '/') {
+      // Navegação para home + âncora
       window.location.href = `/#${sectionId}`;
       return;
     }
@@ -77,7 +79,7 @@ const Header = ({ activeSection, setActiveSection }: HeaderProps) => {
                   key={item.id}
                   to={`/${item.id}`}
                   className={`text-sm font-medium transition-colors hover:text-keyboard-accent ${
-                    activeSection === item.id 
+                    activeSection === item.id || location.pathname === `/${item.id}`
                       ? 'text-keyboard-accent' 
                       : isScrolled 
                         ? 'text-gray-800' 
@@ -147,7 +149,9 @@ const Header = ({ activeSection, setActiveSection }: HeaderProps) => {
                   <RouterLink
                     to={`/${item.id}`}
                     className={`block text-sm font-medium ${
-                      activeSection === item.id ? 'text-keyboard-accent' : 'text-gray-800'
+                      activeSection === item.id || location.pathname === `/${item.id}`
+                        ? 'text-keyboard-accent' 
+                        : 'text-gray-800'
                     }`}
                     onClick={() => setMobileMenuOpen(false)}
                   >
